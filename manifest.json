@@ -1,0 +1,7 @@
+{
+  "name": "A plugin",
+  "id": "960702555296745478",
+  "api": "1.0.0",
+  "main": "code.js",
+  "ui": "ui.html"
+}
