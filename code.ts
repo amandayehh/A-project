@@ -11,17 +11,27 @@ figma.showUI(__html__);
 // Calls to "parent.postMessage" from within the HTML page will trigger this
 // callback. The callback will be passed the "pluginMessage" property of the
 // posted message.
-figma.ui.onmessage = msg => {
+figma.ui.onmessage = (msg) => {
   // One way of distinguishing between different types of messages sent from
   // your HTML page is to use an object with a "type" property like this.
-  if (msg.type === 'create-rectangles') {
+  if (msg.type === "create-rectangles") {
+    let root = figma.currentPage;
+    console.log(root);
+    recurseFileTree(0, root);
 
-
-  for (let node of figma.currentPage.findAll()) {
-    console.log(node.name)
-    console.log(node.name)
+    // Make sure to close the plugin when you're done. Otherwise the plugin will
+    // keep running, which shows the cancel button at the bottom of the screen.
   }
-  // Make sure to close the plugin when you're done. Otherwise the plugin will
-  // keep running, which shows the cancel button at the bottom of the screen.
+};
+
+function recurseFileTree(level: number, node) {
+  // TODO: play note here instead of console
+  console.log(level + ": " + node.name);
+
+  let children = node.children;
+  if (children) {
+    for (let i = children.length - 1; i >= 0; i--) {
+      recurseFileTree(level + 1, children[i]);
+    }
   }
 }
