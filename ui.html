@@ -10,6 +10,7 @@
     let tones = ["C", "D", "E", "F", "G", "A", "B"]
     const synth = new Tone.Synth().toDestination();
     const now = Tone.now()
+    synth.volume.value = -8;
 
 
     for (let i = 0; i <= event.data.pluginMessage.length; i++) {
@@ -38,6 +39,8 @@
       number = 7;
     } else if (level >= 26 && level <= 31) {
       number = 8;
+    } else {
+      number = 9;
     }
 
     console.log(tones[letter] + number)
