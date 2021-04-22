@@ -5,8 +5,7 @@
 <button id="cancel">Cancel</button>
 <script>
   onmessage = (event) => {
-    //console.log("got this from the plugin code", event.data.pluginMessage)
-    //console.log(event.data.pluginMessage.length)
+
     let nodes = event.data.pluginMessage
     let tones = ["C", "D", "E", "F", "G", "A", "B"]
     const synth = new Tone.Synth().toDestination();
@@ -22,7 +21,6 @@
   }
 
   function level2Synth(level, tones) {
-    //console.log(level)
     let number;
     let letter = level % 7;
     if (letter == 0) {
