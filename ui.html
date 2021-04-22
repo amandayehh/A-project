@@ -15,7 +15,6 @@
 
     for (let i = 0; i <= event.data.pluginMessage.length; i++) {
       if (event.data.pluginMessage[i][0] != undefined) {
-
         synth.triggerAttackRelease(level2Synth(nodes[i][0], tones), "16n", now + i / 4)
       }
     }
