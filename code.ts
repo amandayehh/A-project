@@ -27,7 +27,9 @@ figma.ui.onmessage = (msg) => {
 function recurseFileTree(level: number, node) {
   // TODO: play note here instead of console
   //console.log(level + ": " + node.name);
-  nodes.push([level, node.name])
+  if (level != 0) {
+    nodes.push([level, node.name])
+  }
   let children = node.children;
   if (children) {
     for (let i = children.length - 1; i >= 0; i--) {

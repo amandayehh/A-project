@@ -5,8 +5,49 @@
 <button id="cancel">Cancel</button>
 <script>
   onmessage = (event) => {
-    console.log("got this from the plugin code", event.data.pluginMessage)
-    console.log(event.data.pluginMessage.length)
+    //console.log("got this from the plugin code", event.data.pluginMessage)
+    //console.log(event.data.pluginMessage.length)
+    let nodes = event.data.pluginMessage
+    let tones = ["C", "D", "E", "F", "G", "A", "B"]
+    const synth = new Tone.Synth().toDestination();
+    const now = Tone.now()
+
+
+    for (let i = 0; i <= event.data.pluginMessage.length; i++) {
+      if (event.data.pluginMessage[i][0] != undefined) {
+
+        synth.triggerAttackRelease(level2Synth(nodes[i][0], tones), "16n", now + i / 4)
+      }
+    }
+  }
+
+  function level2Synth(level, tones) {
+    //console.log(level)
+    let number;
+    let letter = level % 7;
+    if (letter == 0) {
+      letter = 7
+    }
+    letter--;
+
+    if (level <= 7) {
+      number = 4;
+      console.log("here")
+
+    } else if (level >= 8 && level <= 13) {
+      number = 5;
+    } else if (level >= 14 && level <= 19) {
+      number = 6;
+    } else if (level >= 20 && level <= 25) {
+      number = 7;
+    } else if (level >= 26 && level <= 31) {
+      number = 8;
+    }
+
+    console.log(tones[letter] + number)
+
+    return (tones[letter] + number);
+
   }
 
 
