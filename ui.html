@@ -19,10 +19,6 @@
       if (event.data.pluginMessage[i][0] != undefined) {
         synth.triggerAttackRelease(level2Synth(nodes[i][0], tones), duration(nodes[i][1]), currentDur)
         currentDur = duration(nodes[i][1]) + currentDur;
-        console.log(currentDur);
-
-
-
       }
     }
   }
@@ -48,9 +44,6 @@
     } else {
       number = 9;
     }
-
-    console.log(tones[letter] + number)
-
     return (tones[letter] + number);
   }
 
