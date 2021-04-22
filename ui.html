@@ -10,12 +10,19 @@
     let tones = ["C", "D", "E", "F", "G", "A", "B"]
     const synth = new Tone.Synth().toDestination();
     const now = Tone.now()
+    let currentDur = now;
+
     synth.volume.value = -8;
 
 
     for (let i = 0; i <= event.data.pluginMessage.length; i++) {
       if (event.data.pluginMessage[i][0] != undefined) {
-        synth.triggerAttackRelease(level2Synth(nodes[i][0], tones), "16n", now + i / 4)
+        synth.triggerAttackRelease(level2Synth(nodes[i][0], tones), duration(nodes[i][1]), currentDur)
+        currentDur = duration(nodes[i][1]) + currentDur;
+        console.log(currentDur);
+
+
+
       }
     }
   }
@@ -45,7 +52,31 @@
     console.log(tones[letter] + number)
 
     return (tones[letter] + number);
+  }
 
+  function duration(name) {
+    // if (name.length == 1) {
+    //   return (0.06)
+    // } else if (name.length == 2) {
+    //   return (0.12)
+    // } else if (name.length == 3) {
+    //   return (0.25)
+    // } else if (name.length == 4) {
+    //   return (0.5)
+    // } else if (name.length >= 5) {
+    //   return (name.length - 4)
+    // }
+
+    return (mapRange(name.length, 0, 40, 0, 4))
+  }
+
+
+  // linearly maps value from the range (a..b) to (c..d)
+  function mapRange(value, a, b, c, d) {
+    // first map value from (a..b) to (0..1)
+    value = (value - a) / (b - a);
+    // then map it from (0..1) to (c..d) and return it
+    return c + value * (d - c);
   }
 
 
