@@ -5,6 +5,7 @@
 // full browser environment (see documentation).
 // This shows the HTML page in "ui.html".
 figma.showUI(__html__);
+let nodes = [];
 // Calls to "parent.postMessage" from within the HTML page will trigger this
 // callback. The callback will be passed the "pluginMessage" property of the
 // posted message.
@@ -13,15 +14,17 @@ figma.ui.onmessage = (msg) => {
     // your HTML page is to use an object with a "type" property like this.
     if (msg.type === "create-rectangles") {
         let root = figma.currentPage;
-        console.log(root);
+        //console.log(root);
         recurseFileTree(0, root);
+        figma.ui.postMessage(nodes);
         // Make sure to close the plugin when you're done. Otherwise the plugin will
         // keep running, which shows the cancel button at the bottom of the screen.
     }
 };
 function recurseFileTree(level, node) {
     // TODO: play note here instead of console
-    console.log(level + ": " + node.name);
+    //console.log(level + ": " + node.name);
+    nodes.push([level, node.name]);
     let children = node.children;
     if (children) {
         for (let i = children.length - 1; i >= 0; i--) {

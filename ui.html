@@ -1,17 +1,31 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.17/Tone.js"></script>
 <h2>Rectangle Creator</h2>
 <p>Count: <input id="count" value="5"></p>
 <button id="create">Create swag</button>
 <button id="cancel">Cancel</button>
 <script>
+  onmessage = (event) => {
+    console.log("got this from the plugin code", event.data.pluginMessage)
+    console.log(event.data.pluginMessage.length)
+  }
 
-document.getElementById('create').onclick = () => {
-  const textbox = document.getElementById('count');
-  const count = parseInt(textbox.value, 10);
-  parent.postMessage({ pluginMessage: { type: 'create-rectangles', count } }, '*')
-}
 
-document.getElementById('cancel').onclick = () => {
-  parent.postMessage({ pluginMessage: { type: 'cancel' } }, '*')
-}
+  document.getElementById('create').onclick = () => {
+    const textbox = document.getElementById('count');
+    const count = parseInt(textbox.value, 10);
+    parent.postMessage({
+      pluginMessage: {
+        type: 'create-rectangles',
+        count
+      }
+    }, '*')
+  }
 
+  document.getElementById('cancel').onclick = () => {
+    parent.postMessage({
+      pluginMessage: {
+        type: 'cancel'
+      }
+    }, '*')
+  }
 </script>
