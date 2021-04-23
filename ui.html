@@ -1,15 +1,45 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.17/Tone.js"></script>
-<h2>Rectangle Creator</h2>
-<p>Count: <input id="count" value="5"></p>
-<button id="create">Create swag</button>
-<button id="cancel">Cancel</button>
+<section class="main">
+  <div class="main__button">
+    <div class="main__button__toggle">
+      <svg class="main__button__play" width="68" height="68" viewBox="0 0 68 68" fill="none"
+        xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M50.2614 34.4262L50.9562 34L50.2614 33.5738L26.2614 18.8514L25.5 18.3843L25.5 19.2776L25.5 48.7224L25.5 49.6157L26.2614 49.1486L50.2614 34.4262Z"
+          stroke="white" />
+      </svg>
+
+      <svg class="main__button__pause invisible" width="68" height="68" viewBox="0 0 68 68" fill="none"
+        xmlns="http://www.w3.org/2000/svg">
+        <rect x="19.5" y="19.5" width="11" height="29" stroke="white" />
+        <rect x="37.5" y="19.5" width="11" height="29" stroke="white" />
+      </svg>
+    </div>
+  </div>
+
+</section>
+<section class="volume">
+  <div class="volume__divider"></div>
+  <div class="volume__control">
+    <svg class="volume__control__icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      xmlns="http://www.w3.org/2000/svg">
+      <path d="M13 18C16.3137 18 19 15.3137 19 12C19 8.68629 16.3137 6 13 6" stroke="black" />
+      <path d="M13 15C14.6569 15 16 13.6569 16 12C16 10.3431 14.6569 9 13 9" stroke="black" />
+      <path d="M4 9.75V14.25H7L10.75 18V6L7 9.75H4Z" stroke="black" />
+    </svg>
+    <input class="volume__control__slider" type="range" min="1" max="100" value="50">
+  </div>
+</section>
+
 <script>
+  let isPlaying = false;
+  const synth = new Tone.Synth().toDestination();
   onmessage = (event) => {
+    const now = Tone.now()
 
     let nodes = event.data.pluginMessage
     let tones = ["C", "D", "E", "F", "G", "A", "B"]
-    const synth = new Tone.Synth().toDestination();
-    const now = Tone.now()
+
     let currentDur = now;
 
     synth.volume.value = -8;
@@ -48,7 +78,7 @@
   }
 
   function duration(name) {
-    return (mapRange(name.length, 0, 50, 0, 2.5))
+    return (mapRange(name.length, 0, 50, 0, 2))
   }
 
 
@@ -61,22 +91,160 @@
   }
 
 
-  document.getElementById('create').onclick = () => {
-    const textbox = document.getElementById('count');
-    const count = parseInt(textbox.value, 10);
-    parent.postMessage({
-      pluginMessage: {
-        type: 'create-rectangles',
-        count
-      }
-    }, '*')
+  document.getElementsByClassName('main__button')[0].onclick = () => {
+    if (isPlaying == false) {
+      document.getElementsByClassName('main__button__play')[0].classList.toggle("invisible");
+      document.getElementsByClassName('main__button__pause')[0].classList.toggle("invisible");
+
+      parent.postMessage({
+        pluginMessage: {
+          type: 'play/pause',
+        }
+      }, '*')
+      isPlaying = true;
+
+    }
+    if (isPlaying == true) {
+
+      //stop it
+    }
+
   }
 
-  document.getElementById('cancel').onclick = () => {
-    parent.postMessage({
-      pluginMessage: {
-        type: 'cancel'
-      }
-    }, '*')
-  }
+
+
+  var myAudio = ocument.getElementsByClassName('main__button')[0];
 </script>
+
+<style>
+  :root {
+    --blue: #18A0FB;
+    --main: #333333;
+    --line: #E6E6E6;
+  }
+
+  body {
+    margin: 0;
+  }
+
+  .invisible {
+    display: none;
+  }
+
+  .light {
+    opacity: 50%;
+  }
+
+  /* .visible {
+    visibility: visible;
+  } */
+
+  .main {
+    height: 165px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+  }
+
+  .main__button {
+    background-color: var(--blue);
+    width: 68px;
+    height: 68px;
+    border-radius: 100%;
+    /* display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center; */
+    transition: 0.1s cubic-bezier(.47, -0.35, .47, 1.41);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+  }
+
+
+
+  .main__button:active {
+    width: 62px;
+    height: 62px;
+  }
+
+
+
+
+
+  .main__button__toggle {
+    position: absolute;
+    width: 68px;
+    height: 68px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+  }
+
+  /* .main__button__play {
+    position: absolute;
+  }
+
+  .main__button__pause {
+    position: absolute;
+    left: 19px;
+    top: 19px;
+  }  */
+
+  .volume {
+    position: absolute;
+    bottom: 0px;
+  }
+
+  .volume__control {
+    height: 40px;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+  }
+
+  .volume__divider {
+    width: 100%;
+    height: 1px;
+    background-color: var(--line);
+  }
+
+  .volume__control__icon {
+    margin-right: 8px;
+  }
+
+  .volume__control__slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 1px;
+    background: var(--main);
+    outline: none;
+  }
+
+  .volume__control__slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    transform: translateY(0.5px);
+    width: 12px;
+    height: 12px;
+    border-radius: 100%;
+    border: 1px solid var(--main);
+    background: white;
+    cursor: pointer;
+
+  }
+
+  .volume__control__slider::-moz-range-thumb {
+    transform: translateY(0.5px);
+    width: 12px;
+    height: 12px;
+    border-radius: 100%;
+    border: 1px solid var(--main);
+
+    background: white;
+    cursor: pointer;
+  }
+</style>
